@@ -22,9 +22,15 @@ const handleSelect = (key, keyPath) => {
                 <el-menu-item :route="{ name: 'material' }" index="2">
                     物质管理系统
                 </el-menu-item>
-                <el-menu-item :route="{ name: 'user' }" index="3">
-                    员工管理系统
-                </el-menu-item>
+                <el-sub-menu index="3">
+                    <template #title>系统管理</template>
+                    <el-menu-item :route="{ name: 'user' }" index="3-1">
+                        员工管理
+                    </el-menu-item>
+                    <el-menu-item :route="{ name: 'department' }" index="3-2">
+                        部门管理
+                    </el-menu-item>
+                </el-sub-menu>
             </el-menu>
         </el-header>
         <el-main><router-view></router-view></el-main>

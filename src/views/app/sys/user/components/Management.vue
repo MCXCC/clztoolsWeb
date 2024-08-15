@@ -1,9 +1,8 @@
 <script setup lang="jsx">
-import ManagementForm from "@/views/app/material/components/ManagementForm.vue";
 import { ref, onMounted } from "vue";
 import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download } from "@element-plus/icons-vue";
-import { getMaterialList } from "@/apis/material.js";
+import { getUserList } from "@/apis/user";
 
 const handleSizeChange = (val) => {
     console.log(`${val} items per page`);
@@ -23,51 +22,16 @@ const columns = [
         flexGrow: 1,
     },
     {
-        key: "workshop",
-        dataKey: "workshop",
-        title: "配属车间",
-        width: 150,
-        align: "center",
-    },
-    {
-        key: "gang",
-        dataKey: "gang",
-        title: "配属工班",
+        key: "username",
+        dataKey: "username",
+        title: "用户名",
         width: 150,
         align: "center",
     },
     {
         key: "name",
         dataKey: "name",
-        title: "物资名称",
-        width: 150,
-        align: "center",
-    },
-    {
-        key: "specification",
-        dataKey: "specification",
-        title: "规格型号",
-        width: 250,
-        align: "center",
-    },
-    {
-        key: "number",
-        dataKey: "number",
-        title: "入库数量",
-        width: 150,
-        align: "center",
-    },
-    {
-        key: "picture",
-        dataKey: "picture",
-        title: "图片",
-        width: 150,
-        align: "center",
-    },
-    {
-        key: "remark",
-        dataKey: "remark",
-        title: "备注",
+        title: "姓名",
         width: 150,
         align: "center",
     },
@@ -79,13 +43,6 @@ const columns = [
             <>
                 <ElButton size="small" onClick={() => console.log(data)}>
                     编辑
-                </ElButton>
-                <ElButton
-                    size="small"
-                    type="warning"
-                    onClick={() => console.log(data)}
-                >
-                    借出
                 </ElButton>
                 <ElButton
                     size="small"
@@ -121,17 +78,13 @@ const handleUploadClick = () => {};
 const handleDownloadClick = () => {};
 
 onMounted(() => {
-    getMaterialList().then((res) => {
+    getUserList().then((res) => {
         data.value = res.data.data;
+        pagination.value.total = res.data.page.count;
     });
 });
 </script>
 <template>
-    <ManagementForm
-        v-model:visible="operationVisible"
-        v-model:data="data"
-        :method="method"
-    />
     <el-container>
         <el-header>
             <el-row justify="end">
@@ -141,7 +94,7 @@ onMounted(() => {
                         :icon="Plus"
                         round
                         @click="handleOperationClick('add')"
-                        >入库
+                        >添加
                     </el-button>
                     <el-button
                         type="warning"

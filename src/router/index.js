@@ -1,12 +1,4 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "@/views/app/home/Index.vue";
-import Material from "@/views/app/material/Index.vue";
-import MaterialManagement from "@/views/app/material/components/Management.vue";
-import MaterialSell from "@/views/app/material/components/Sell.vue";
-import Login from "@/views/login/Index.vue";
-import App from "@/views/app/Index.vue";
-import User from "@/views/app/user/Index.vue";
-import UserManagement from "@/views/app/user/components/Management.vue";
 
 const routes = [
     {
@@ -16,50 +8,67 @@ const routes = [
     {
         path: "/login",
         name: "login",
-        component: Login,
+        component: () => import("@/views/login/Index.vue"),
     },
     {
         path: "/app",
         name: "app",
-        component: App,
+        component: () => import("@/views/app/Index.vue"),
         children: [
             {
-                path: "/app/home",
+                path: "home",
                 name: "home",
-                component: Home,
+                component: () => import("@/views/app/home/Index.vue"),
             },
             {
-                path: "/app/material",
-                name: "material",
-                component: Material,
+                path: "sys",
                 children: [
                     {
-                        path: "",
-                        redirect: "/app/material/management",
+                        path: "material",
+                        name: "material",
+                        component: () => import("@/views/app/material/Index.vue"),
+                        children: [
+                            {
+                                path: "",
+                                redirect: "management",
+                            },
+                            {
+                                path: "management",
+                                name: "material-management",
+                                component: () => import("@/views/app/material/components/Management.vue"),
+                            },
+                            {
+                                path: "sell",
+                                name: "material-sell",
+                                component: () => import("@/views/app/material/components/Sell.vue"),
+                            },
+                        ],
                     },
                     {
-                        path: "/app/material/management",
-                        name: "material-management",
-                        component: MaterialManagement,
+                        path: "user",
+                        name: "user",
+                        component: () => import("@/views/app/sys/user/Index.vue"),
+                        children: [
+                            {
+                                path: "management",
+                                name: "user-management",
+                                component: () => import("@/views/app/sys/user/components/Management.vue"),
+                            },
+                        ],
                     },
                     {
-                        path: "/app/material/sell",
-                        name: "material-sell",
-                        component: MaterialSell,
-                    },
-                ],
-            },
-            {
-                path: "/app/user",
-                name: "user",
-                component: User,
-                children: [
-                    {
-                        path: "/app/user/management",
-                        name: "user-management",
-                        component: UserManagement,
-                    },
-                ],
+                        path: "department",
+                        name: "department",
+                        component: () => import("@/views/app/sys/department/Index.vue"),
+                        children: [
+                            {
+                                path: "management",
+                                name: "department-management",
+                                component: () => import("@/views/app/sys/department/components/Management.vue"),
+                            }
+                        ]
+                    }
+                ]
             },
         ],
     },

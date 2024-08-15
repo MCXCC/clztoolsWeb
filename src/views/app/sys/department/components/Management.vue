@@ -60,11 +60,13 @@ const columns = [
 ];
 const data = ref([]);
 
-const size = ref();
-const currentPage = ref(1);
-const pageSize = ref(10);
 const operationVisible = ref(false);
 const method = ref("");
+const pagination = ref({
+    total: 0,
+    currentPage: 1,
+    pageSize: 10,
+});
 
 const handleOperationClick = (thisMethod) => {
     method.value = thisMethod;
@@ -78,6 +80,7 @@ const handleDownloadClick = () => {};
 onMounted(() => {
     getUserList().then((res) => {
         data.value = res.data.data;
+        pagination.value.total = res.data.page.count;
     });
 });
 </script>
@@ -91,7 +94,7 @@ onMounted(() => {
                         :icon="Plus"
                         round
                         @click="handleOperationClick('add')"
-                        >入库
+                        >添加
                     </el-button>
                     <el-button
                         type="warning"
@@ -127,13 +130,13 @@ onMounted(() => {
         </el-main>
     </el-container>
     <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[100, 200, 300, 400]"
-        :size="size"
+        v-model:current-page="pagination.currentPage"
+        v-model:page-size="pagination.pageSize"
+        :page-sizes="[10, 20, 50]"
+        size="default"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="100"
+        :total="pagination.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
     />
