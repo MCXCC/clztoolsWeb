@@ -9,7 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.35"
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "@vue/babel-plugin-jsx": "^1.2.2",
+    "axios": "^1.7.2",
+    "element-plus": "^2.7.6",
+    "pinia": "^2.2.1",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "vue": "^3.4.35",
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
