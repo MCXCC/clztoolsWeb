@@ -1,5 +1,4 @@
 <script setup>
-import router from "@/router/index";
 import { onMounted } from "vue";
 const handleOpen = (key, keyPath) => {
     console.log(key, keyPath);

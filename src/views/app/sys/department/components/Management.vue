@@ -1,22 +1,74 @@
 <script setup lang="jsx">
 import { ref, onMounted } from "vue";
-import { ElButton } from "element-plus";
+import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download, Delete } from "@element-plus/icons-vue";
 import { getDepartmentList } from "@/apis/department";
-
-const handleDeleteClick = () => {
-    console.log(tree.value.getCheckedNodes());
-};
 
 const props = {
     value: "id",
     label: "name",
     children: "children",
 };
-const tree = ref();
+
 const data = ref([]);
+const treeData = ref([]);
+const listData = ref([]);
 const operationVisible = ref(false);
-const method = ref("");
+const method = ref([]);
+
+const columns = [
+    {
+        key: "id",
+        dataKey: "id",
+        title: "序号",
+        fixed: TableV2FixedDir.LEFT,
+        width: 150,
+        align: "center",
+        flexGrow: 1,
+    },
+    {
+        key: "name",
+        dataKey: "name",
+        title: "名称",
+        width: 150,
+        align: "center",
+    },
+    {
+        key: "operations",
+        title: "操作",
+        fixed: TableV2FixedDir.RIGHT,
+        cellRenderer: (data) => (
+            <>
+                <ElButton size="small" onClick={() => console.log(data)}>
+                    编辑
+                </ElButton>
+                <ElButton
+                    size="small"
+                    type="danger"
+                    onClick={() => console.log(data)}
+                >
+                    删除
+                </ElButton>
+            </>
+        ),
+        width: 200,
+        align: "center",
+        flexGrow: 1,
+    },
+];
+
+/**
+ * 更新列表数据
+ * @param {*} node - 要刷新的节点数据
+ */
+const refreshListDate = (node) => {
+    // 初始化列表数据，只包含传入的节点
+    listData.value = [node];
+    // 如果节点有子节点，将子节点添加到列表数据中
+    listData.value.push(...(node.children || []));
+};
+
+const handleDeleteClick = () => {};
 
 const handleOperationClick = (thisMethod) => {
     method.value = thisMethod;
@@ -27,14 +79,18 @@ const handleUploadClick = () => {};
 
 const handleDownloadClick = () => {};
 
+const handleNodeClick = (node) => {
+    refreshListDate(node);
+};
+
 onMounted(() => {
     getDepartmentList().then((res) => {
-        let tree = [];
+        data.value = res.data.data;
         const map = new Map();
         res.data.data.forEach((element) => {
             map.set(element.id, element);
         });
-        tree = res.data.data.filter((element) => {
+        treeData.value = res.data.data.filter((element) => {
             const parent = element.parent ? map.get(element.parent.id) : null;
             if (parent) {
                 if (!parent.children) {
@@ -45,8 +101,6 @@ onMounted(() => {
             }
             return true;
         });
-
-        data.value = tree;
     });
 });
 </script>
@@ -87,16 +141,29 @@ onMounted(() => {
             </el-row>
         </el-header>
         <el-main>
-            <el-tree-v2
-                ref="tree"
-                :props="props"
-                show-checkbox
-                check-strictly
-                :data="data"
-                :width="width"
-                :height="height"
-                fixed
-            />
+            <el-container>
+                <el-aside style="min-height: 50vh" width="200px">
+                    <el-tree-v2
+                        :props="props"
+                        :data="treeData"
+                        fixed
+                        @node-click="handleNodeClick"
+                    />
+                </el-aside>
+                <el-main>
+                    <el-auto-resizer>
+                        <template #default="{ height, width }">
+                            <el-table-v2
+                                :columns="columns"
+                                :data="listData"
+                                :width="width"
+                                :height="height"
+                                fixed
+                            />
+                        </template>
+                    </el-auto-resizer>
+                </el-main>
+            </el-container>
         </el-main>
     </el-container>
 </template>
