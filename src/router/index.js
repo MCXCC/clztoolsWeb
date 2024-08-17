@@ -27,11 +27,8 @@ const routes = [
                         path: "material",
                         name: "material",
                         component: () => import("@/views/app/material/Index.vue"),
+                        redirect: { name: "material-management" },
                         children: [
-                            {
-                                path: "",
-                                redirect: "management",
-                            },
                             {
                                 path: "management",
                                 name: "material-management",
@@ -48,6 +45,7 @@ const routes = [
                         path: "user",
                         name: "user",
                         component: () => import("@/views/app/sys/user/Index.vue"),
+                        redirect: { name: "user-management" },
                         children: [
                             {
                                 path: "management",
@@ -60,6 +58,7 @@ const routes = [
                         path: "department",
                         name: "department",
                         component: () => import("@/views/app/sys/department/Index.vue"),
+                        redirect: { name: "department-management" },
                         children: [
                             {
                                 path: "management",

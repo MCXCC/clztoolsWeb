@@ -8,9 +8,7 @@ const handleClose = (key, keyPath) => {
     console.log(key, keyPath);
 };
 
-onMounted(() => {
-    router.push({ name: "department-management" });
-});
+onMounted(() => {});
 </script>
 <template>
     <el-container>
