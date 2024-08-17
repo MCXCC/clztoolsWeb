@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useStore } from "@/store/index";
+const store = useStore();
 const activeIndex = ref("1");
-
 const handleSelect = (key, keyPath) => {
     console.log(key, keyPath);
 };
@@ -38,7 +39,13 @@ const handleSelect = (key, keyPath) => {
                         </el-sub-menu>
                     </el-menu>
                 </el-col>
-                <el-col :span="4"> </el-col>
+                <el-col :span="4" style="display: flex; align-items: center">
+                    <el-avatar
+                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                        style="margin-right: 10px"
+                    />
+                    <span>{{ store.user.name }}</span>
+                </el-col>
             </el-row>
         </el-header>
         <el-main><router-view></router-view></el-main>

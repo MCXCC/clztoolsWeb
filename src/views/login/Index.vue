@@ -24,6 +24,8 @@ const onLogin = (formData) => {
             });
         } else {
             store.user.token = res.data.data.token;
+            store.user.name = res.data.data.name;
+            store.user.id = res.data.data.id;
             ElMessage({
                 message: "登录成功!",
                 type: "success",
