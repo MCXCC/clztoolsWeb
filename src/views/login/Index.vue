@@ -15,27 +15,30 @@ const rules = ref({
     password: [{ required: true, trigger: "blur", message: "请输入密码" }],
 });
 
+const onLogin = (formData) => {
+    login(formData).then((res) => {
+        if (res.code != 200) {
+            ElMessage({
+                message: res.msg,
+                type: "warning",
+            });
+        } else {
+            store.user.token = res.data.data.token;
+            ElMessage({
+                message: "登录成功!",
+                type: "success",
+            });
+            router.push({ name: "home" });
+        }
+    });
+};
 const onSubmit = async (formEl) => {
     if (!formEl) return;
     await formEl.validate((valid, fields) => {
         if (valid) {
             data.value.username = form.value.username;
             data.value.password = b64_md5(form.value.password);
-            login(data.value).then((res) => {
-                if (res.code != 200) {
-                    ElMessage({
-                        message: res.msg,
-                        type: "warning",
-                    });
-                } else {
-                    store.user.token = res.data.data.token;
-                    ElMessage({
-                        message: "登录成功!",
-                        type: "success",
-                    });
-                    router.push({ name: "home" });
-                }
-            });
+            onLogin(data.value);
         } else {
             ElMessage({
                 message: "登录失败!",
@@ -51,6 +54,10 @@ onMounted(() => {
         password: "xmgd123",
         token: null,
     };
+    if (store.user.token) {
+        data.value.token = store.user.token;
+        onLogin(data.value);
+    }
 });
 </script>
 <template>
