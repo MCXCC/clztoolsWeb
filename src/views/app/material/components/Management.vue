@@ -135,7 +135,7 @@ onMounted(() => {
     <el-container>
         <el-header>
             <el-row justify="end">
-                <el-col :span="10">
+                <el-col :span="6">
                     <el-button
                         type="primary"
                         :icon="Plus"

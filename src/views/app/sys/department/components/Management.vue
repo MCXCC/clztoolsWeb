@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download, Delete } from "@element-plus/icons-vue";
 import { getDepartmentList } from "@/apis/department";
+import ManagementForm from "@/views/app/sys/department/components/ManagementForm.vue";
 
 const props = {
     value: "id",
@@ -14,7 +15,7 @@ const data = ref([]);
 const treeData = ref([]);
 const listData = ref([]);
 const operationVisible = ref(false);
-const method = ref([]);
+const method = ref("");
 
 const columns = [
     {
@@ -105,10 +106,15 @@ onMounted(() => {
 });
 </script>
 <template>
+    <ManagementForm
+        v-model:visible="operationVisible"
+        v-model:data="data"
+        :method="method"
+    />
     <el-container>
         <el-header>
             <el-row justify="end">
-                <el-col :span="12">
+                <el-col :span="6">
                     <el-button
                         type="primary"
                         :icon="Plus"
@@ -142,7 +148,7 @@ onMounted(() => {
         </el-header>
         <el-main>
             <el-container>
-                <el-aside style="min-height: 50vh" width="200px">
+                <el-aside style="min-height: 50vh; width: 200px">
                     <el-tree-v2
                         :props="props"
                         :data="treeData"
