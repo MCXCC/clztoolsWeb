@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import { b64_md5 } from "@/utils/md5.js";
-import { login } from "@/apis/user.js";
+import { loginApi } from "@/apis/user.js";
 import { useStore } from "@/store/index";
 import router from "@/router/index";
 
@@ -16,7 +16,7 @@ const rules = ref({
 });
 
 const onLogin = (formData) => {
-    login(formData).then((res) => {
+    loginApi(formData).then((res) => {
         if (res.code != 200) {
             ElMessage({
                 message: res.msg,

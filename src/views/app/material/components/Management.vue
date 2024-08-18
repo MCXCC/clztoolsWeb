@@ -3,7 +3,7 @@ import ManagementForm from "@/views/app/material/components/ManagementForm.vue";
 import { ref, onMounted } from "vue";
 import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download } from "@element-plus/icons-vue";
-import { getMaterialList } from "@/apis/material.js";
+import { getMaterialListApi } from "@/apis/material.js";
 
 const handleSizeChange = (val) => {
     console.log(`${val} items per page`);
@@ -121,7 +121,7 @@ const handleUploadClick = () => {};
 const handleDownloadClick = () => {};
 
 onMounted(() => {
-    getMaterialList().then((res) => {
+    getMaterialListApi().then((res) => {
         data.value = res.data.data;
     });
 });

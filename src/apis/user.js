@@ -1,13 +1,13 @@
 import http from "@/utils/http.js";
 
 
-export const getUserList = () => {
+export const getUserListApi = () => {
     return http.request({
         url: "/sys/user/list",
         method: "get",
     });
 };
-export const login = (data) => {
+export const loginApi = (data) => {
     return http.request({
         url: "/sys/user/login",
         method: "POST",

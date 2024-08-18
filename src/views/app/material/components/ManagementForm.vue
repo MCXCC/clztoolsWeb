@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
+
 const props = defineProps({
     method: {
         type: String,

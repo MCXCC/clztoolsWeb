@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download, Delete } from "@element-plus/icons-vue";
-import { getDepartmentList } from "@/apis/department";
+import { getDepartmentListApi } from "@/apis/department";
 import ManagementForm from "@/views/app/sys/department/components/ManagementForm.vue";
 
 const props = {
@@ -85,7 +85,7 @@ const handleNodeClick = (node) => {
 };
 
 onMounted(() => {
-    getDepartmentList().then((res) => {
+    getDepartmentListApi().then((res) => {
         data.value = res.data.data;
         const map = new Map();
         res.data.data.forEach((element) => {

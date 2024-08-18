@@ -1,8 +1,10 @@
 <script setup>
 import { ref, watch } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
-import { getDepartmentList } from "@/apis/department";
+import { getDepartmentListApi } from "@/apis/department";
 import { Check, Close } from "@element-plus/icons-vue";
+import { addDepartmentApi } from "@/apis/department";
+
 const props = defineProps({
     method: {
         type: String,
@@ -15,7 +17,9 @@ const formRef = ref();
 const isContinue = ref(false);
 const form = ref({
     name: "",
-    parent: "",
+    parent: {
+        id: "",
+    },
 });
 const rules = ref({
     name: [{ required: true, trigger: "blur" }],
@@ -25,7 +29,7 @@ const title = ref("");
 const departmentTree = ref([]);
 
 const getDepartmentTree = async () => {
-    const response = await getDepartmentList();
+    const response = await getDepartmentListApi();
     const data = response.data.data;
 
     // 定义转换函数
@@ -72,11 +76,14 @@ const getDepartmentTree = async () => {
     return tree;
 };
 const init = async () => {
+    console.log(form.value);
     departmentTree.value = await getDepartmentTree();
     if (props.method === "add") {
         form.value = {
             name: "",
-            parent: "",
+            parent: {
+                id: null,
+            },
         };
         title.value = "添加部门";
     } else {
@@ -93,12 +100,13 @@ const onSubmit = async (formEl) => {
     if (!formEl) return;
     await formEl.validate((valid, fields) => {
         if (valid) {
+            addDepartmentApi(form.value).then((res) => {
+                console.log(res);
+            });
             ElMessage({
                 message: "添加成功",
                 type: "success",
             });
-            console.log(form.value);
-            // data.value?.push(form.value);
             if (isContinue.value) {
                 init();
             } else {
@@ -129,7 +137,7 @@ watch(visible, init);
             </el-form-item>
             <el-form-item label="父级部门" prop="parent">
                 <el-tree-select
-                    v-model="form.parent"
+                    v-model="form.parent.id"
                     :data="departmentTree"
                     check-strictly
                     :render-after-expand="false"

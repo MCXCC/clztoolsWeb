@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { ElButton, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download } from "@element-plus/icons-vue";
-import { getUserList } from "@/apis/user";
+import { getUserListApi } from "@/apis/user";
 
 const handleSizeChange = (val) => {
     console.log(`${val} items per page`);
@@ -78,7 +78,7 @@ const handleUploadClick = () => {};
 const handleDownloadClick = () => {};
 
 onMounted(() => {
-    getUserList().then((res) => {
+    getUserListApi().then((res) => {
         data.value = res.data.data;
         pagination.value.total = res.data.page.count;
     });
