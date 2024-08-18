@@ -148,7 +148,7 @@ onMounted(() => {
         </el-header>
         <el-main>
             <el-container>
-                <el-aside style="min-height: 50vh; width: 200px">
+                <el-aside style="min-height: 50vh; width: 220px">
                     <el-tree-v2
                         :props="props"
                         :data="treeData"

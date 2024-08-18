@@ -12,7 +12,6 @@ export const getDepartmentListApi = () => {
 };
 
 export const addDepartmentApi = (data) => {
-    data.updatedBy = { id: store.user.id }
     return http.request({
         url: "/sys/department/add",
         method: "post",
