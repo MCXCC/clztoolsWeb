@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "@/router/Index";
+import router from "@/router/index";
 import { baseURL_dev, baseURL_pro, baseURL_test } from "@/utils/baseURL";
 import { useStore } from "@/store/index";
 
@@ -62,20 +62,11 @@ class HttpRequest {
             (error) => {
                 console.log("error==>", error);
                 if (error.response && error.response.status === 401) {
-                    // 处理401状态码，例如尝试刷新token
-                    // 这里可以实现一个token刷新机制
-                    const newToken = localStorage.getItem("Token");
-                    if (newToken) {
-                        // 设置新的token到请求头
-                        this.instance.defaults.headers.common[
-                            "Authorization"
-                        ] = `Bearer ${newToken}`;
-                        router.push("/login");
-                    } else {
-                        // 清除旧token
-                        localStorage.removeItem("Token");
-                        router.push("/login");
-                    }
+                    const store = useStore()
+                    // 清除旧token
+                    store.user.token = null
+                    router.push("/login");
+
                 } else if (
                     error.response &&
                     [403, 404, 500, 502].includes(error.response.status)
