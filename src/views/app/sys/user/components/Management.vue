@@ -36,6 +36,13 @@ const columns = [
         align: "center",
     },
     {
+        key: "department",
+        dataKey: "department.name",
+        title: "部门",
+        width: 150,
+        align: "center",
+    },
+    {
         key: "operations",
         title: "操作",
         fixed: TableV2FixedDir.RIGHT,
