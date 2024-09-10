@@ -19,15 +19,6 @@ const method = ref("");
 
 const columns = [
     {
-        key: "id",
-        dataKey: "id",
-        title: "序号",
-        fixed: TableV2FixedDir.LEFT,
-        width: 150,
-        align: "center",
-        flexGrow: 1,
-    },
-    {
         key: "name",
         dataKey: "name",
         title: "名称",
