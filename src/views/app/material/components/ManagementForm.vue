@@ -1,9 +1,10 @@
 <script setup>
-import { ref, watch } from "vue";
-import { ElMessageBox, ElMessage } from "element-plus";
+import { ref } from "vue";
+import { ElMessage } from "element-plus";
+import Update from "@/components/update/Index.vue";
 
 const props = defineProps({
-    method: {
+    title: {
         type: String,
         required: true,
     },
@@ -11,9 +12,17 @@ const props = defineProps({
 const formRef = ref();
 const visible = defineModel("visible", { default: false });
 const data = defineModel("data", { required: true });
-const form = ref();
+const form = ref({
+    id: "",
+    workshop: "",
+    gang: "",
+    name: "",
+    specification: "",
+    number: 0,
+    picture: "",
+    remark: "",
+});
 const rules = ref({
-    id: [{ required: true }],
     workshop: [{ required: true, trigger: "blur" }],
     gang: [{ required: true, trigger: "blur" }],
     name: [{ required: true, trigger: "blur" }],
@@ -22,30 +31,6 @@ const rules = ref({
     picture: [],
     remark: [],
 });
-const title = ref("");
-
-const init = () => {
-    if (props.method === "add") {
-        form.value = {
-            id: data.value?.length > 0 ? String(1 + data.value.at(-1).id) : "1",
-            workshop: "运营公务供电分公司变电一车间",
-            gang: "新线筹备组",
-            name: "",
-            specification: "",
-            number: 0,
-            picture: "",
-            remark: "",
-        };
-        title.value = "添加物资";
-    } else {
-        ElMessageBox.confirm("错误的method值", "Warning", {
-            confirmButtonText: "OK",
-            type: "warning",
-        }).then(() => {
-            visible.value = false;
-        });
-    }
-};
 
 const onSubmit = async (formEl) => {
     if (!formEl) return;
@@ -65,11 +50,9 @@ const onSubmit = async (formEl) => {
         }
     });
 };
-
-watch(visible, init);
 </script>
 <template>
-    <el-dialog v-model="visible" :title="title" width="500" center>
+    <el-dialog v-model="visible" :title="props.title" width="500" center>
         <el-form
             ref="formRef"
             :model="form"
@@ -78,7 +61,12 @@ watch(visible, init);
             style="max-width: 600px"
         >
             <el-form-item label="序号" prop="id">
-                <el-input disabled v-model="form.id" autocomplete="off" />
+                <el-input
+                    disabled
+                    v-model="form.id"
+                    placeholder="提交后自动生成"
+                    autocomplete="off"
+                />
             </el-form-item>
             <el-form-item label="所属车间" prop="workshop">
                 <el-input v-model="form.workshop" autocomplete="off" />
@@ -101,6 +89,7 @@ watch(visible, init);
                 <el-input-number v-model="form.number" :min="0" />
             </el-form-item>
             <el-form-item label="图片" prop="picture">
+                <Update></Update>
                 <el-input disabled v-model="form.picture" autocomplete="off" />
             </el-form-item>
             <el-form-item label="备注" prop="remark">

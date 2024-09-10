@@ -1,7 +1,7 @@
 <script setup lang="jsx">
 import ManagementForm from "@/views/app/material/components/ManagementForm.vue";
 import { ref, onMounted } from "vue";
-import { ElButton, TableV2FixedDir } from "element-plus";
+import { ElButton, ElMessageBox, TableV2FixedDir } from "element-plus";
 import { Plus, Upload, Download } from "@element-plus/icons-vue";
 import { getMaterialListApi } from "@/apis/material.js";
 
@@ -104,16 +104,23 @@ const columns = [
 const data = ref([]);
 
 const operationVisible = ref(false);
-const method = ref("");
+const formTitle = ref("");
 const pagination = ref({
     total: 0,
     currentPage: 1,
     pageSize: 10,
 });
 
-const handleOperationClick = (thisMethod) => {
-    method.value = thisMethod;
-    operationVisible.value = true;
+const handleOperationClick = (method) => {
+    if (method === "add") {
+        formTitle.value = "添加物资";
+        operationVisible.value = true;
+    } else {
+        ElMessageBox.confirm("错误的method值", "Warning", {
+            confirmButtonText: "OK",
+            type: "warning",
+        });
+    }
 };
 
 const handleUploadClick = () => {};
@@ -130,7 +137,7 @@ onMounted(() => {
     <ManagementForm
         v-model:visible="operationVisible"
         v-model:data="data"
-        :method="method"
+        :title="formTitle"
     />
     <el-container>
         <el-header>
